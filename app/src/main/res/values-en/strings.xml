@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LoginDemo</string>
+    <string name="title_login_activity">Sign in</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="error_invalid_username">This username is invalid</string>
+    <string name="error_invalid_password_too_short">This password is too short</string>
+    <string name="error_invalid_password_too_long">This password is too long</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="hint_attempts">attempts left</string>
+
+    <string name="hint_login_successful">login successful</string>
+    <string name="hint_login_failed">login failed</string>
+
+    <string name="hint_sign_in_reenable_countdown_front">Retry after</string>
+    <string name="hint_sign_in_reenable_countdown_rear">seconds</string>
+
+    <string name="title_sign_up_activity">Sign up</string>
+    <string name="hint_repeat_password">Repeat password</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="error_inconsistent_passwords">The two passwords do not match</string>
+    <string name="error_invalid_username_too_short">This username is too short</string>
+    <string name="error_invalid_username_too_long">This username is too long</string>
+    <string name="hint_sign_up_successful">Sign up successful</string>
+    <string name="error_sign_up_failed_username_exists">Username occupied</string>
+    <string name="error_invalid_username_not_exists">Username does not exist</string>
+</resources>
