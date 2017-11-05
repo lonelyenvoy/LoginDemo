@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">登录界面</string>
-    <string name="title_login_activity">登录</string>
+    <string name="action_ok">确定</string>
+    <string name="action_cancel">取消</string>
+
+    <string name="app_name">登录演示</string>
     <string name="hint_username">用户名</string>
     <string name="hint_password">密码</string>
     <string name="action_sign_in">登录</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="action_cancel">取消</string>
+
     <string name="error_invalid_username">用户名无效</string>
     <string name="error_invalid_password_too_short">密码太短</string>
     <string name="error_invalid_password_too_long">密码太长</string>
@@ -21,7 +23,6 @@
     <string name="hint_sign_in_reenable_countdown_front">请等待</string>
     <string name="hint_sign_in_reenable_countdown_rear">秒后重试</string>
 
-    <string name="title_sign_up_activity">注册</string>
     <string name="hint_repeat_password">再次输入密码</string>
     <string name="action_sign_up">注册</string>
     <string name="error_inconsistent_passwords">密码不一致</string>
@@ -30,4 +31,26 @@
     <string name="hint_sign_up_successful">注册成功</string>
     <string name="error_sign_up_failed_username_exists">用户名已存在</string>
     <string name="error_invalid_username_not_exists">用户名不存在</string>
+
+    <string name="hint_admin_activity_table_header_username">用户名</string>
+    <string name="hint_admin_activity_table_header_password">密码密文</string>
+    <string name="hint_admin_activity_table_header_isAdmin">管理员?</string>
+    <string name="hint_admin_activity_table_header_createdAt">注册时间</string>
+
+    <string name="field_user_detail_activity_id">编号</string>
+    <string name="field_user_detail_activity_username">用户名</string>
+    <string name="field_user_detail_activity_password">密码密文(MD5)</string>
+    <string name="field_user_detail_activity_role">角色</string>
+    <string name="field_user_detail_activity_sign_up_time">注册时间</string>
+    <string name="field_user_detail_activity_last_update_time">最后修改时间</string>
+    <string name="hint_user_detail_activity_isAdmin_true">管理员</string>
+    <string name="hint_user_detail_activity_isAdmin_false">普通用户</string>
+
+    <string name="action_remove_user">删除用户</string>
+    <string name="hint_are_you_sure_to_remove_user">确认删除此用户吗？</string>
+
+    <string name="title_login_activity">登录</string>
+    <string name="title_sign_up_activity">注册</string>
+    <string name="title_admin_activity">用户管理</string>
+    <string name="title_user_detail_activity">用户信息</string>
 </resources>

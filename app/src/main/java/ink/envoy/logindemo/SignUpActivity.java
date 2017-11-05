@@ -1,7 +1,6 @@
 package ink.envoy.logindemo;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
@@ -12,10 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Date;
+import ink.envoy.logindemo.util.MD5Hasher;
+import ink.envoy.logindemo.util.UsersDatabaseHelper;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -197,7 +196,8 @@ public class SignUpActivity extends AppCompatActivity {
                 long time = System.currentTimeMillis();
                 ContentValues values = new ContentValues();
                 values.put("username", username);
-                values.put("password", password);
+                values.put("password", MD5Hasher.hash(password));
+                values.put("isAdmin", 0);
                 values.put("createdAt", time);
                 values.put("updatedAt", time);
                 db.insert("users", null, values);

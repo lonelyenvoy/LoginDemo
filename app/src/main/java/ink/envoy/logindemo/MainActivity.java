@@ -1,6 +1,5 @@
 package ink.envoy.logindemo;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +20,10 @@ import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import ink.envoy.logindemo.util.Counter;
+import ink.envoy.logindemo.util.MD5Hasher;
+import ink.envoy.logindemo.util.UsersDatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -109,9 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 // 向左手势
                 if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY){
                     clearEditTexts();
-
-                    Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(MainActivity.this, SignUpActivity.class));
                 }
                 // 向右手势
                 else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY){
@@ -140,14 +141,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LoginAuthenticationStatus authenticate(String username, String password) {
-        SQLiteDatabase db = usersDatabaseHelper.getWritableDatabase();
-        Cursor cursor = db.query("users", new String[] { "username", "password" }, "username=?",
+        SQLiteDatabase db = usersDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.query("users", new String[] { "username", "password", "isAdmin" }, "username=?",
                 new String[]{ username }, null, null, null);
         try {
             if (cursor.moveToNext()) { // found
                 String realPassword = cursor.getString(1);
-                return password.equals(realPassword)
-                        ? LoginAuthenticationStatus.SUCCESS
+                boolean isAdmin = cursor.getInt(2) == 1;
+                return MD5Hasher.hash(password).equals(realPassword)
+                        ? (isAdmin
+                            ? LoginAuthenticationStatus.SUCCESS_ADMIN
+                            : LoginAuthenticationStatus.SUCCESS_NORMAL)
                         : LoginAuthenticationStatus.WRONG_PASSWORD;
             } else {
                 return LoginAuthenticationStatus.USERNAME_NOT_EXISTS;
@@ -217,9 +221,19 @@ public class MainActivity extends AppCompatActivity {
 
         LoginAuthenticationStatus status = authenticate(username, password);
         switch (status) {
-            case SUCCESS:
-                Toast.makeText(getApplicationContext(), getString(R.string.hint_login_successful), Toast.LENGTH_SHORT).show();
+            case SUCCESS_ADMIN:
+                clearEditTexts();
                 updateAttemptsTextView(counter.reset());
+                startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                break;
+            case SUCCESS_NORMAL:
+                clearEditTexts();
+                //Toast.makeText(getApplicationContext(), getString(R.string.hint_login_successful), Toast.LENGTH_SHORT).show();
+                updateAttemptsTextView(counter.reset());
+                Intent intent = new Intent(getApplicationContext(), UserDetailActivity.class);
+                intent.putExtra("id", getIdByUsername(username) + "");
+                intent.putExtra("currentLoginUserRole", "NORMAL");
+                startActivity(intent);
                 break;
             case USERNAME_NOT_EXISTS:
                 passwordEditText.setText("");
@@ -239,6 +253,22 @@ public class MainActivity extends AppCompatActivity {
                     new SignInReenablecheduler().run();
                 }
                 break;
+        }
+    }
+
+    private int getIdByUsername(String username) {
+        SQLiteDatabase db = usersDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.query("users", new String[] { "_id" }, "username=?",
+                new String[]{ username }, null, null, null);
+        try {
+            if (cursor.moveToNext()) {
+                return cursor.getInt(0);
+            } else {
+                throw new RuntimeException("User Id does not exist");
+            }
+        } finally {
+            cursor.close();
+            db.close();
         }
     }
 
@@ -295,26 +325,9 @@ public class MainActivity extends AppCompatActivity {
 
     private enum LoginAuthenticationStatus {
         UNKNOWN,
-        SUCCESS,
+        SUCCESS_ADMIN,
+        SUCCESS_NORMAL,
         USERNAME_NOT_EXISTS,
         WRONG_PASSWORD
-    }
-}
-
-class Counter {
-    private int value;
-    private int initialValue;
-
-    Counter(int initialValue) {
-        this.initialValue = this.value = initialValue;
-    }
-    int decrease() {
-        return --this.value;
-    }
-    int getValue() {
-        return this.value;
-    }
-    int reset() {
-        return this.value = this.initialValue;
     }
 }
