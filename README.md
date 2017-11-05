@@ -1,5 +1,5 @@
 # LoginDemo
-A demo Android app for Signing up and login, including simple user administration
+An internationalized demo Android app for Signing up and login, including simple user administration
 
 ### Demo
 <img src="resources/app-function-demo.gif" width="350" alt="App Demo" />
