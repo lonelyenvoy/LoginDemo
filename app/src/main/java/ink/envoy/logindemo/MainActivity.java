@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LoginAuthenticationStatus authenticate(String username, String password) {
         SQLiteDatabase db = usersDatabaseHelper.getReadableDatabase();
-        Cursor cursor = db.query("users", new String[] { "username", "password", "isAdmin" }, "username=?",
-                new String[]{ username }, null, null, null);
+        Cursor cursor = db.query("users", new String[] { "username", "password", "isAdmin" },
+                "username=?", new String[]{ username }, null, null, null);
         try {
             if (cursor.moveToNext()) { // found
                 String realPassword = cursor.getString(1);

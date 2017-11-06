@@ -47,6 +47,7 @@ public class MainActivityInstrumentationTest {
     private static final String ERROR_INVALID_USERNAME = "This username is invalid";
     private static final String ERROR_INVALID_PASSWORD_TOO_SHORT = "This password is too short";
     private static final String ERROR_INVALID_PASSWORD_TOO_LONG = "This password is too long";
+    private static final String ERROR_FIELD_REQUIRED = "This field is required";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
@@ -65,6 +66,20 @@ public class MainActivityInstrumentationTest {
         onView(withId(R.id.passwordEditText)).perform(typeText(TEST_USER_PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.signInButton)).perform(click());
         onView(withId(R.id.userDetailTableView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
+
+    @Test
+    public void loginWithEmptyUsername(){
+        onView(withId(R.id.passwordEditText)).perform(typeText(WHATEVER), closeSoftKeyboard());
+        onView(withId(R.id.signInButton)).perform(click());
+        onView(withId(R.id.usernameEditText)).check(matches(hasErrorText(ERROR_FIELD_REQUIRED)));
+    }
+
+    @Test
+    public void loginWithEmptyPassword(){
+        onView(withId(R.id.usernameEditText)).perform(typeText(ADMIN_USERNAME), closeSoftKeyboard());
+        onView(withId(R.id.signInButton)).perform(click());
+        onView(withId(R.id.passwordEditText)).check(matches(hasErrorText(ERROR_FIELD_REQUIRED)));
     }
 
     @Test
